@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 import { PageContent } from '@/components/frontend/PageContent'
 
 interface PageProps {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 async function getPage(slug: string) {
@@ -26,7 +26,8 @@ async function getPage(slug: string) {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const page = await getPage(params.slug)
+  const resolvedParams = await params
+  const page = await getPage(resolvedParams.slug)
   
   if (!page) {
     return {
@@ -46,7 +47,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function Page({ params }: PageProps) {
-  const page = await getPage(params.slug)
+  const resolvedParams = await params
+  const page = await getPage(resolvedParams.slug)
   
   if (!page) {
     notFound()
