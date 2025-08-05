@@ -4,6 +4,12 @@
 /node_modules
 /.pnp
 .pnp.*
+
+# pnpm
+.pnpm-store
+.pnpm-debug.log*
+
+# yarn (keep for reference)
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
@@ -39,3 +45,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# prisma
+/prisma/migrations
+
+# uploads
+/uploads/*
+!/uploads/.gitkeep
+
+# lock files (keep pnpm-lock.yaml)
+package-lock.json
+yarn.lock

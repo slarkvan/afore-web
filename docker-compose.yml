@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: afore_user
+      POSTGRES_PASSWORD: afore_password
+      POSTGRES_DB: afore_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - afore_network
+
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://afore_user:afore_password@db:5432/afore_db
+      - JWT_SECRET=your-jwt-secret-key-change-in-production
+      - JWT_EXPIRES_IN=7d
+    volumes:
+      - ./uploads:/app/uploads
+    depends_on:
+      - db
+    networks:
+      - afore_network
+
+volumes:
+  postgres_data:
+
+networks:
+  afore_network:
+    driver: bridge
